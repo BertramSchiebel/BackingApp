@@ -5,11 +5,11 @@ import org.json.JSONObject;
 
 public class StepEntry
 {
-    private final String BJS_ID = "id";
-    private final String BJS_SHORT_DESCRIPTION = "shortDescritpion";
-    private final String BJS_DESCRIPTION = "descritpion";
-    private final String BJS_VIDEO_URL = "videoURL";
-    private final String BJS_THUMBNAIL_URL = "thumbnailURL";
+    private static final String BJS_ID = "id";
+    private static final String BJS_SHORT_DESCRIPTION = "shortDescritpion";
+    private static final String BJS_DESCRIPTION = "descritpion";
+    private static final String BJS_VIDEO_URL = "videoURL";
+    private static final String BJS_THUMBNAIL_URL = "thumbnailURL";
 
     private int id;
     private String shortDescritpion;
@@ -57,24 +57,23 @@ public class StepEntry
         this.thumbnailURL = thumbnailURL;
     }
 
-    public StepEntry getStepEntry(String jsonData) {
+    static StepEntry getStepEntry(JSONObject jsonData) {
         StepEntry entry = new StepEntry();
         try {
-            JSONObject backingDataJSON = new JSONObject(jsonData);
-            if (backingDataJSON.has(BJS_ID)) {
-                entry.setId(backingDataJSON.getInt(BJS_ID));
+            if (jsonData.has(BJS_ID)) {
+                entry.setId(jsonData.getInt(BJS_ID));
             }
-            if (backingDataJSON.has(BJS_DESCRIPTION)) {
-                entry.setDescritpion(backingDataJSON.getString(BJS_DESCRIPTION));
+            if (jsonData.has(BJS_DESCRIPTION)) {
+                entry.setDescritpion(jsonData.getString(BJS_DESCRIPTION));
             }
-            if (backingDataJSON.has(BJS_SHORT_DESCRIPTION)) {
-                entry.setShortDescritpion(backingDataJSON.getString(BJS_SHORT_DESCRIPTION));
+            if (jsonData.has(BJS_SHORT_DESCRIPTION)) {
+                entry.setShortDescritpion(jsonData.getString(BJS_SHORT_DESCRIPTION));
             }
-            if (backingDataJSON.has(BJS_THUMBNAIL_URL)) {
-                entry.setThumbnailURL(backingDataJSON.getString(BJS_THUMBNAIL_URL));
+            if (jsonData.has(BJS_THUMBNAIL_URL)) {
+                entry.setThumbnailURL(jsonData.getString(BJS_THUMBNAIL_URL));
             }
-            if (backingDataJSON.has(BJS_VIDEO_URL)) {
-                entry.setVideoURL(backingDataJSON.getString(BJS_VIDEO_URL));
+            if (jsonData.has(BJS_VIDEO_URL)) {
+                entry.setVideoURL(jsonData.getString(BJS_VIDEO_URL));
             }
 
         }

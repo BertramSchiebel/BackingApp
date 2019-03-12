@@ -5,9 +5,9 @@ import org.json.JSONObject;
 
 public class IngredientEntry
 {
-    private final String BJS_QUANTITY = "quantity";
-    private final String BJS_MEASURE = "measure";
-    private final String BJS_INGREDITENT = "ingredient";
+    private static final String BJS_QUANTITY = "quantity";
+    private static final String BJS_MEASURE = "measure";
+    private static final String BJS_INGREDITENT = "ingredient";
 
     private double quantity;
     private String measure;
@@ -37,18 +37,17 @@ public class IngredientEntry
         this.ingredient = ingredient;
     }
 
-    public IngredientEntry getIngredientEntry(String jsonData) {
+    static IngredientEntry getIngredientEntry(JSONObject jsonData) {
         IngredientEntry ingredientEntry = new IngredientEntry();
         try {
-            JSONObject backingDataJSON = new JSONObject(jsonData);
-            if (backingDataJSON.has(BJS_QUANTITY)) {
-                ingredientEntry.setQuantity(backingDataJSON.getDouble(BJS_QUANTITY));
+            if (jsonData.has(BJS_QUANTITY)) {
+                ingredientEntry.setQuantity(jsonData.getDouble(BJS_QUANTITY));
             }
-            if (backingDataJSON.has(BJS_INGREDITENT)) {
-                ingredientEntry.setIngredient(backingDataJSON.getString(BJS_INGREDITENT));
+            if (jsonData.has(BJS_INGREDITENT)) {
+                ingredientEntry.setIngredient(jsonData.getString(BJS_INGREDITENT));
             }
-            if (backingDataJSON.has(BJS_MEASURE)) {
-                ingredientEntry.setMeasure(backingDataJSON.getString(BJS_MEASURE));
+            if (jsonData.has(BJS_MEASURE)) {
+                ingredientEntry.setMeasure(jsonData.getString(BJS_MEASURE));
             }
         }
         catch (JSONException e) {
