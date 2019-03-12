@@ -5,8 +5,6 @@ import org.json.JSONObject;
 
 public class IngredientEntry
 {
-    private static final String TAG = IngredientEntry.class.getSimpleName();
-
     private final String BJS_QUANTITY = "quantity";
     private final String BJS_MEASURE = "measure";
     private final String BJS_INGREDITENT = "ingredient";
@@ -39,23 +37,23 @@ public class IngredientEntry
         this.ingredient = ingredient;
     }
 
-    public IngredientEntry getIngredientEntry (String jsonData){
+    public IngredientEntry getIngredientEntry(String jsonData) {
         IngredientEntry ingredientEntry = new IngredientEntry();
         try {
             JSONObject backingDataJSON = new JSONObject(jsonData);
-            if (backingDataJSON.has(BJS_QUANTITY)){
+            if (backingDataJSON.has(BJS_QUANTITY)) {
                 ingredientEntry.setQuantity(backingDataJSON.getDouble(BJS_QUANTITY));
             }
-            if (backingDataJSON.has(BJS_INGREDITENT)){
+            if (backingDataJSON.has(BJS_INGREDITENT)) {
                 ingredientEntry.setIngredient(backingDataJSON.getString(BJS_INGREDITENT));
             }
-            if (backingDataJSON.has(BJS_MEASURE)){
+            if (backingDataJSON.has(BJS_MEASURE)) {
                 ingredientEntry.setMeasure(backingDataJSON.getString(BJS_MEASURE));
             }
         }
         catch (JSONException e) {
             e.printStackTrace();
-            return  null;
+            return null;
         }
 
         return ingredientEntry;
