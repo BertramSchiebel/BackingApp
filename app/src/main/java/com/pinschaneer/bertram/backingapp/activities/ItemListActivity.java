@@ -19,7 +19,6 @@ import com.pinschaneer.bertram.backingapp.ItemDetailActivity;
 import com.pinschaneer.bertram.backingapp.ItemDetailFragment;
 import com.pinschaneer.bertram.backingapp.R;
 import com.pinschaneer.bertram.backingapp.data.RecipeEntry;
-import com.pinschaneer.bertram.backingapp.dummy.DummyContent;
 
 import java.util.List;
 
@@ -88,10 +87,10 @@ public class ItemListActivity extends AppCompatActivity
         {
             @Override
             public void onClick(View view) {
-                DummyContent.DummyItem item = (DummyContent.DummyItem) view.getTag();
+                RecipeEntry item = (RecipeEntry) view.getTag();
                 if (mTwoPane) {
                     Bundle arguments = new Bundle();
-                    arguments.putString(ItemDetailFragment.ARG_ITEM_ID, item.id);
+                    arguments.putInt(ItemDetailFragment.ARG_ITEM_ID, item.getId());
                     ItemDetailFragment fragment = new ItemDetailFragment();
                     fragment.setArguments(arguments);
                     mParentActivity.getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container, fragment).commit();
@@ -99,7 +98,7 @@ public class ItemListActivity extends AppCompatActivity
                 else {
                     Context context = view.getContext();
                     Intent intent = new Intent(context, ItemDetailActivity.class);
-                    intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, item.id);
+                    intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, item.getId());
 
                     context.startActivity(intent);
                 }
