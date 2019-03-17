@@ -1,19 +1,24 @@
-package com.pinschaneer.bertram.backingapp;
+package com.pinschaneer.bertram.backingapp.activities;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.pinschaneer.bertram.backingapp.ItemDetailActivity;
+import com.pinschaneer.bertram.backingapp.ItemDetailFragment;
+import com.pinschaneer.bertram.backingapp.R;
+import com.pinschaneer.bertram.backingapp.data.RecipeEntry;
 import com.pinschaneer.bertram.backingapp.dummy.DummyContent;
 
 import java.util.List;
@@ -34,24 +39,27 @@ public class ItemListActivity extends AppCompatActivity
      * device.
      */
     private boolean mTwoPane;
+    private ItemListActivityViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        viewModel = ViewModelProviders.of(this).get(ItemListActivityViewModel.class);
+        viewModel.getRecipeEntries().observe(this, new Observer<List<RecipeEntry>>()
+        {
+            @Override
+            public void onChanged(@Nullable List<RecipeEntry> recipeEntries) {
+                setupRecyclerView(recipeEntries);
+            }
+        });
+
         setContentView(R.layout.activity_item_list);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-            }
-        });
 
         if (findViewById(R.id.item_detail_container) != null) {
             // The detail container view will be present only in the
@@ -61,20 +69,20 @@ public class ItemListActivity extends AppCompatActivity
             mTwoPane = true;
         }
 
-        View recyclerView = findViewById(R.id.item_list);
-        assert recyclerView != null;
-        setupRecyclerView((RecyclerView) recyclerView);
+
     }
 
-    private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, DummyContent.ITEMS, mTwoPane));
+    private void setupRecyclerView(List<RecipeEntry> recipeEntries) {
+        RecyclerView recyclerView = findViewById(R.id.item_list);
+        assert recyclerView != null;
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, recipeEntries, mTwoPane));
     }
 
     public static class SimpleItemRecyclerViewAdapter extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder>
     {
 
         private final ItemListActivity mParentActivity;
-        private final List<DummyContent.DummyItem> mValues;
+        private final List<RecipeEntry> mValues;
         private final boolean mTwoPane;
         private final View.OnClickListener mOnClickListener = new View.OnClickListener()
         {
@@ -98,23 +106,25 @@ public class ItemListActivity extends AppCompatActivity
             }
         };
 
-        SimpleItemRecyclerViewAdapter(ItemListActivity parent, List<DummyContent.DummyItem> items,
+        SimpleItemRecyclerViewAdapter(ItemListActivity parent, List<RecipeEntry> items,
                                       boolean twoPane) {
             mValues = items;
             mParentActivity = parent;
             mTwoPane = twoPane;
         }
 
+        @NonNull
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_content, parent, false);
             return new ViewHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.mIdView.setText(mValues.get(position).id);
-            holder.mContentView.setText(mValues.get(position).content);
+        public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
+            Integer id = mValues.get(position).getId();
+            holder.mIdView.setText(id.toString());
+            holder.mContentView.setText(mValues.get(position).getName());
 
             holder.itemView.setTag(mValues.get(position));
             holder.itemView.setOnClickListener(mOnClickListener);
@@ -132,8 +142,8 @@ public class ItemListActivity extends AppCompatActivity
 
             ViewHolder(View view) {
                 super(view);
-                mIdView = (TextView) view.findViewById(R.id.id_text);
-                mContentView = (TextView) view.findViewById(R.id.content);
+                mIdView = view.findViewById(R.id.id_text);
+                mContentView = view.findViewById(R.id.content);
             }
         }
     }

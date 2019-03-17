@@ -6,14 +6,14 @@ import org.json.JSONObject;
 public class StepEntry
 {
     private static final String BJS_ID = "id";
-    private static final String BJS_SHORT_DESCRIPTION = "shortDescritpion";
-    private static final String BJS_DESCRIPTION = "descritpion";
+    private static final String BJS_SHORT_DESCRIPTION = "shortDescription";
+    private static final String BJS_DESCRIPTION = "description";
     private static final String BJS_VIDEO_URL = "videoURL";
     private static final String BJS_THUMBNAIL_URL = "thumbnailURL";
 
     private int id;
-    private String shortDescritpion;
-    private String descritpion;
+    private String shortDescription;
+    private String description;
     private String videoURL;
     private String thumbnailURL;
 
@@ -25,20 +25,44 @@ public class StepEntry
         this.id = id;
     }
 
-    public String getShortDescritpion() {
-        return shortDescritpion;
+    static StepEntry getStepEntry(JSONObject jsonData) {
+        StepEntry entry = new StepEntry();
+        try {
+            if (jsonData.has(BJS_ID)) {
+                entry.setId(jsonData.getInt(BJS_ID));
+            }
+            if (jsonData.has(BJS_DESCRIPTION)) {
+                entry.setDescription(jsonData.getString(BJS_DESCRIPTION));
+            }
+            if (jsonData.has(BJS_SHORT_DESCRIPTION)) {
+                entry.setShortDescription(jsonData.getString(BJS_SHORT_DESCRIPTION));
+            }
+            if (jsonData.has(BJS_THUMBNAIL_URL)) {
+                entry.setThumbnailURL(jsonData.getString(BJS_THUMBNAIL_URL));
+            }
+            if (jsonData.has(BJS_VIDEO_URL)) {
+                entry.setVideoURL(jsonData.getString(BJS_VIDEO_URL));
+            }
+
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return entry;
     }
 
-    private void setShortDescritpion(String shortDescritpion) {
-        this.shortDescritpion = shortDescritpion;
+    public String getShortDescription() {
+        return shortDescription;
     }
 
-    public String getDescritpion() {
-        return descritpion;
+    private void setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
     }
 
-    private void setDescritpion(String descritpion) {
-        this.descritpion = descritpion;
+    public String getDescription() {
+        return description;
     }
 
     public String getVideoURL() {
@@ -57,31 +81,7 @@ public class StepEntry
         this.thumbnailURL = thumbnailURL;
     }
 
-    static StepEntry getStepEntry(JSONObject jsonData) {
-        StepEntry entry = new StepEntry();
-        try {
-            if (jsonData.has(BJS_ID)) {
-                entry.setId(jsonData.getInt(BJS_ID));
-            }
-            if (jsonData.has(BJS_DESCRIPTION)) {
-                entry.setDescritpion(jsonData.getString(BJS_DESCRIPTION));
-            }
-            if (jsonData.has(BJS_SHORT_DESCRIPTION)) {
-                entry.setShortDescritpion(jsonData.getString(BJS_SHORT_DESCRIPTION));
-            }
-            if (jsonData.has(BJS_THUMBNAIL_URL)) {
-                entry.setThumbnailURL(jsonData.getString(BJS_THUMBNAIL_URL));
-            }
-            if (jsonData.has(BJS_VIDEO_URL)) {
-                entry.setVideoURL(jsonData.getString(BJS_VIDEO_URL));
-            }
-
-        }
-        catch (JSONException e) {
-            e.printStackTrace();
-            return null;
-        }
-
-        return entry;
+    private void setDescription(String description) {
+        this.description = description;
     }
 }
