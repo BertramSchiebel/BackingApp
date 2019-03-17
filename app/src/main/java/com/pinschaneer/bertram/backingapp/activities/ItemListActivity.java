@@ -1,5 +1,6 @@
-package com.pinschaneer.bertram.backingapp;
+package com.pinschaneer.bertram.backingapp.activities;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.pinschaneer.bertram.backingapp.ItemDetailActivity;
+import com.pinschaneer.bertram.backingapp.ItemDetailFragment;
+import com.pinschaneer.bertram.backingapp.R;
 import com.pinschaneer.bertram.backingapp.dummy.DummyContent;
 
 import java.util.List;
@@ -32,10 +36,14 @@ public class ItemListActivity extends AppCompatActivity
      * device.
      */
     private boolean mTwoPane;
+    private ItemListActivityViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        viewModel = ViewModelProviders.of(this).get(ItemListActivityViewModel.class);
+
         setContentView(R.layout.activity_item_list);
 
         Toolbar toolbar = findViewById(R.id.toolbar);

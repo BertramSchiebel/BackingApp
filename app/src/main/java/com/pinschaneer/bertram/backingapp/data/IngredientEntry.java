@@ -7,7 +7,7 @@ public class IngredientEntry
 {
     private static final String BJS_QUANTITY = "quantity";
     private static final String BJS_MEASURE = "measure";
-    private static final String BJS_INGREDITENT = "ingredient";
+    private static final String BJS_INGREDIENT = "ingredient";
 
     private double quantity;
     private String measure;
@@ -43,8 +43,8 @@ public class IngredientEntry
             if (jsonData.has(BJS_QUANTITY)) {
                 ingredientEntry.setQuantity(jsonData.getDouble(BJS_QUANTITY));
             }
-            if (jsonData.has(BJS_INGREDITENT)) {
-                ingredientEntry.setIngredient(jsonData.getString(BJS_INGREDITENT));
+            if (jsonData.has(BJS_INGREDIENT)) {
+                ingredientEntry.setIngredient(jsonData.getString(BJS_INGREDIENT));
             }
             if (jsonData.has(BJS_MEASURE)) {
                 ingredientEntry.setMeasure(jsonData.getString(BJS_MEASURE));

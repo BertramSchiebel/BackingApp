@@ -8,10 +8,10 @@ import java.util.ArrayList;
 
 public class RecipeEntry
 {
-    private final String BJS_ID = "id";
-    private final String BJS_NAME = "name";
-    private final String BJS_INGEDIENTS = "ingredients";
-    private final String BJS_STEPS = "steps";
+    private static final String BJS_ID = "id";
+    private static final String BJS_NAME = "name";
+    private static final String BJS_INGREDIENTS = "ingredients";
+    private static final String BJS_STEPS = "steps";
     private int id;
     private String name;
     private ArrayList<IngredientEntry> ingredients;
@@ -51,23 +51,22 @@ public class RecipeEntry
         return steps;
     }
 
-    public RecipeEntry getRecipeEntry(String jsonData) {
+    public static RecipeEntry getRecipeEntry(JSONObject jsonBackingData) {
         RecipeEntry entry = new RecipeEntry();
         try {
-            JSONObject backingDataJSON = new JSONObject(jsonData);
-            if (backingDataJSON.has(BJS_ID)) {
-                entry.setId(backingDataJSON.getInt(BJS_ID));
+            if (jsonBackingData.has(BJS_ID)) {
+                entry.setId(jsonBackingData.getInt(BJS_ID));
             }
-            if (backingDataJSON.has(BJS_NAME)) {
-                entry.setName(backingDataJSON.getString(BJS_NAME));
+            if (jsonBackingData.has(BJS_NAME)) {
+                entry.setName(jsonBackingData.getString(BJS_NAME));
             }
-            if (backingDataJSON.has(BJS_INGEDIENTS)){
-                JSONArray  ingredientsList = backingDataJSON.getJSONArray(BJS_INGEDIENTS);
-                parseIngredients(ingredientsList);
+            if (jsonBackingData.has(BJS_INGREDIENTS)) {
+                JSONArray ingredientsList = jsonBackingData.getJSONArray(BJS_INGREDIENTS);
+                entry.ingredients = parseIngredients(ingredientsList);
             }
-            if (backingDataJSON.has(BJS_STEPS)){
-                JSONArray  stepList = backingDataJSON.getJSONArray(BJS_STEPS);
-                parseSteps(stepList);
+            if (jsonBackingData.has(BJS_STEPS)) {
+                JSONArray stepList = jsonBackingData.getJSONArray(BJS_STEPS);
+                entry.steps = parseSteps(stepList);
             }
 
         }
@@ -79,7 +78,8 @@ public class RecipeEntry
         return entry;
     }
 
-    private void parseSteps(JSONArray stepList) {
+    private static ArrayList<StepEntry> parseSteps(JSONArray stepList) {
+        ArrayList<StepEntry> steps = new ArrayList<>();
         for (int i = 0; i < stepList.length(); i++) {
             try {
                 JSONObject jsonStepEntry = stepList.getJSONObject(i);
@@ -92,10 +92,11 @@ public class RecipeEntry
                 e.printStackTrace();
             }
         }
-
+        return steps;
     }
 
-    private void parseIngredients(JSONArray ingredientsList) {
+    private static ArrayList<IngredientEntry> parseIngredients(JSONArray ingredientsList) {
+        ArrayList<IngredientEntry> ingredients = new ArrayList<>();
         for (int i = 0; i < ingredientsList.length(); i++) {
             try {
                 JSONObject jsonIngredientEntry = ingredientsList.getJSONObject(i);
@@ -108,6 +109,7 @@ public class RecipeEntry
                 e.printStackTrace();
             }
         }
+        return ingredients;
     }
 
 }
