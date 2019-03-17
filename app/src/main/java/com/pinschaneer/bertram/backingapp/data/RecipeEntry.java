@@ -34,11 +34,6 @@ public class RecipeEntry
         return name;
     }
 
-    @Override
-    public String toString() {
-        return name;
-    }
-
     private void setName(String name) {
         this.name = name;
     }

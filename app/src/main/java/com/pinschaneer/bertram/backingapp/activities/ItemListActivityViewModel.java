@@ -18,6 +18,10 @@ import java.util.List;
 
 public class ItemListActivityViewModel extends AndroidViewModel
 {
+    public MutableLiveData<List<RecipeEntry>> getRecipeEntries() {
+        return recipeEntries;
+    }
+
     public MutableLiveData<List<RecipeEntry>> recipeEntries;
 
     public ItemListActivityViewModel(@NonNull Application application) {
